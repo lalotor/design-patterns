@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class BeatBar extends JProgressBar implements Runnable {
   private static final long serialVersionUID = 2L;
-  Thread thread;
+  private Thread thread;
 
   public BeatBar() {
     thread = new Thread(this);

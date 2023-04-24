@@ -3,9 +3,7 @@ package headfirst.designpatterns.combined.djview;
 public class BeatController implements ControllerInterface {
 
   private BeatModelInterface model;
-  DJView view;
-
-  
+  private DJView view;
 
   public BeatController(BeatModelInterface model) {
     this.model = model;
