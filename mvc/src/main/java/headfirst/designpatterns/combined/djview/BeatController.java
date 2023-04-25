@@ -10,8 +10,8 @@ public class BeatController implements ControllerInterface {
     view = new DJView(model, this);
     view.createView();
     view.createControls();
-    //view.disableStopMenuItem();
-    //view.enableStartMenuItem();
+    view.disableStopMenuItem();
+    view.enableStartMenuItem();
     model.initialize();
   }
 

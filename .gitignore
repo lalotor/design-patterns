@@ -50,4 +50,7 @@ replay_pid*
 # Build folders
 target/
 
+### IntelliJ IDEA ###
+.idea/
+
 # End of https://www.toptal.com/developers/gitignore/api/java,visualstudiocode

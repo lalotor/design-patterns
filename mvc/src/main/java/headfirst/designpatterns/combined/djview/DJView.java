@@ -1,7 +1,9 @@
 package headfirst.designpatterns.combined.djview;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class DJView implements ActionListener, BeatObserver, BPMObserver {
@@ -110,6 +112,10 @@ public class DJView implements ActionListener, BeatObserver, BPMObserver {
 
   @Override
   public void updateBPM() {
+    if (bpmOutputLabel == null) {
+      return;
+    }
+
     int bpm = model.getBPM();
     if (bpm == 0) {
       bpmOutputLabel.setText("offline");
@@ -120,6 +126,10 @@ public class DJView implements ActionListener, BeatObserver, BPMObserver {
 
   @Override
   public void updateBeat() {
+    if (beatBar == null) {
+      return;
+    }
+
     beatBar.setValue(100);
   }
 

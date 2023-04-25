@@ -2,44 +2,45 @@ package headfirst.designpatterns.combined.djview;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.sound.sampled.Clip;
 
-public class BeatModel implements BeatModelInterface, Runnable {
+public class HeartModel implements HeartModelInterface, Runnable {
 
   private final List<BeatObserver> beatObservers = new ArrayList<>();
   private final List<BPMObserver> bpmObservers = new ArrayList<>();
-  private int bpm = 90;
-  private boolean stop = false;
-  private Clip clip;
+  private int time = 1000;
+  private final Random random = new Random(System.currentTimeMillis());
+  private final Clip clip;
 
-  @Override
-  public void initialize() {
+  public HeartModel() {
     Util util = new Util();
     clip = util.loadSoundClip("clap.wav");
-  }
-
-  @Override
-  public void on() {
-    bpm = 90;
-    notifyBPMObservers();
     Thread thread = new Thread(this);
-    stop = false;
     thread.start();
   }
 
   @Override
-  public void off() {
-    stopBeat();
-    stop = true;
-  }
-
   public void run() {
-    while (!stop) {
-      playBeat();
-      notifyBeatObservers();
+    int lastRate = -1;
+    for (;;) {
+      int change = random.nextInt(10);
+      if (random.nextInt(2) == 0) {
+        change = 0 - change;
+      }
+      int rate = 60000 / (time + change);
+      if (rate < 120 && rate > 50) {
+        time += change;
+        playBeat();
+        notifyBeatObservers();
+        if (rate != lastRate) {
+          lastRate = rate;
+          notifyBPMObservers();
+        }
+      }
       try {
-        Thread.sleep(60000 / getBPM());
+        Thread.sleep(time);
       } catch (Exception e) {
         System.err.println("Error: " + e.getMessage());
       }
@@ -47,14 +48,8 @@ public class BeatModel implements BeatModelInterface, Runnable {
   }
 
   @Override
-  public void setBPM(int bpm) {
-    this.bpm = bpm;
-    notifyBPMObservers();
-  }
-
-  @Override
-  public int getBPM() {
-    return bpm;
+  public int getHeartRate() {
+    return 60000 / time;
   }
 
   @Override
@@ -85,14 +80,9 @@ public class BeatModel implements BeatModelInterface, Runnable {
     bpmObservers.remove(o);
   }
 
-  public void playBeat() {
+  private void playBeat() {
     clip.setFramePosition(0);
     clip.start();
-  }
-
-  public void stopBeat() {
-    clip.setFramePosition(0);
-    clip.close();
   }
 
 }
