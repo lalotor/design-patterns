@@ -27,13 +27,34 @@ class AppTest {
   }
 
   @Test
-  void givenPhoneCameraApp_whenShare_thenExpectedResult() {
+  void givenBasicCameraApp_whenPerformShare_thenShareTxtBehavior() {
     //given - precondition or setup
     PhoneCameraApp app = new BasicCameraApp();
     //when - action or the behaviour that we are going to test
-    String result = app.share();
+    String result = app.performShare();
     //then - verify the output
-    assertThat(result).isEqualTo(PhoneCameraApp.class.getName() + " [default] share()");
+    assertThat(result).isEqualTo(ShareTxt.class.getName() + " share()");
+  }
+
+  @Test
+  void givenCameraPlusApp_whenPerformShare_thenShareEmailBehavior() {
+    //given - precondition or setup
+    PhoneCameraApp app = new CameraPlusApp();
+    //when - action or the behaviour that we are going to test
+    String result = app.performShare();
+    //then - verify the output
+    assertThat(result).isEqualTo(ShareEmail.class.getName() + " share()");
+  }
+
+  @Test
+  void givenCameraPlusApp_whenSetShareStrategy_thenShareSocialBehavior() {
+    //given - precondition or setup
+    PhoneCameraApp app = new CameraPlusApp();
+    app.setShareStrategy(new ShareSocial());
+    //when - action or the behaviour that we are going to test
+    String result = app.performShare();
+    //then - verify the output
+    assertThat(result).isEqualTo(ShareSocial.class.getName() + " share()");
   }
 
   @Test
