@@ -53,4 +53,7 @@ target/
 ### IntelliJ IDEA ###
 .idea/
 
+### MacOS ###
+.DS_Store
+
 # End of https://www.toptal.com/developers/gitignore/api/java,visualstudiocode
