@@ -56,4 +56,25 @@ class AppTest {
     assertThat(result).isEqualTo(MallardDuck.class.getName() + " fly()");
   }
 
+  @Test
+  void givenDroneAdapter_whenQuack_thenBeep() {
+    //given - precondition or setup
+    Duck app = new DroneAdapter(new SuperDrone());
+    //when - action or the behaviour that we are going to test
+    String result = app.quack();
+    //then - verify the output
+    assertThat(result).isEqualTo(SuperDrone.class.getName() + " beep()");
+  }
+
+  @Test
+  void givenDroneAdapter_whenFly_thenSpinRotorsAndTakeOff() {
+    //given - precondition or setup
+    Duck app = new DroneAdapter(new SuperDrone());
+    //when - action or the behaviour that we are going to test
+    String result = app.fly();
+    //then - verify the output
+    assertThat(result).isEqualTo(SuperDrone.class.getName() + " spinRotors() - " +
+        SuperDrone.class.getName() + " takeOff()");
+  }
+
 }
