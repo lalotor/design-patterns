@@ -2,50 +2,48 @@ package headfirst.designpatterns.observer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AppTest {
+  private WeatherStation weatherStation;
+  private UserInterface userInterface;
+  private Logger logger;
+  private AlertSystem alertSystem;
+  private final float temperature = 8.7f;
+  private final float windSpeed = 10f;
+  private final float pressure = 47.83f;
 
-  @Test
-  void givenWeatherStation_whenCallMethods_thenExpectedResults() {
-    //given - precondition or setup
-    WeatherStation weatherStation = new WeatherStation();
-    //when - action or the behaviour that we are going to test
-
-    //then - verify the output
-    assertThat(weatherStation.temperature()).isEqualTo(WeatherStation.class.getName() + " temperature()");
-    assertThat(weatherStation.windSpeed()).isEqualTo(WeatherStation.class.getName() + " windSpeed()");
-    assertThat(weatherStation.pressure()).isEqualTo(WeatherStation.class.getName() + " pressure()");
+  @BeforeEach
+  public void setUp() {
+    weatherStation = new WeatherStation();
+    userInterface = new UserInterface(weatherStation);
+    logger = new Logger(weatherStation);
+    alertSystem = new AlertSystem(weatherStation);
   }
 
   @Test
-  void givenWeatherStation_whenDisplay_thenExpectedResult() {
+  void givenObservers_whenSetMeasurements_thenExpectedResult() {
     //given - precondition or setup
-    UserInterface userInterface = new UserInterface();
     //when - action or the behaviour that we are going to test
-
+    weatherStation.setMeasurements(temperature, windSpeed, pressure);
     //then - verify the output
-    assertThat(userInterface.display()).isEqualTo(UserInterface.class.getName() + " display()");
+    assertThat(userInterface.getMessage()).isEqualTo("Temperature = 8.7 , wind speed = 10.0 , pressure = 47.83");
+    assertThat(logger.getEntriesAsString()).isEqualTo("[Temperature]: 8.7 | [WindSpeed]: 10.0 | [Pressure]: 47.83");
+    assertThat(logger.getEntry(1)).isEqualTo("[WindSpeed]: 10.0");
+    assertThat(alertSystem.isTemperatureOutOfRange()).isFalse();
+    assertThat(alertSystem.isWindSpeedOutOfRange()).isTrue();
+    assertThat(alertSystem.isPressureOutOfRange()).isTrue();
   }
 
   @Test
-  void givenLogger_whenLog_thenExpectedResult() {
+  void givenLogger_whenRemoveObserver_thenEmptyEntries() {
     //given - precondition or setup
-    Logger logger = new Logger();
     //when - action or the behaviour that we are going to test
-
+    weatherStation.removeObserver(logger);
+    weatherStation.setMeasurements(temperature, windSpeed, pressure);
     //then - verify the output
-    assertThat(logger.log()).isEqualTo(Logger.class.getName() + " log()");
-  }
-
-  @Test
-  void givenAlertSystem_whenAlert_thenExpectedResult() {
-    //given - precondition or setup
-    AlertSystem alertSystem = new AlertSystem();
-    //when - action or the behaviour that we are going to test
-
-    //then - verify the output
-    assertThat(alertSystem.alert()).isEqualTo(AlertSystem.class.getName() + " alert()");
+    assertThat(logger.getEntriesAsString()).isEmpty();
   }
 
 }
