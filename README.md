@@ -7,6 +7,8 @@ https://www.linkedin.com/learning/programming-foundations-design-patterns-2
 ## Patterns list
 * MVC
 * Strategy
+* Adapter
+* Observer
 
 ## Maven commands
 - mvn clean compile
