@@ -9,6 +9,8 @@ https://www.linkedin.com/learning/programming-foundations-design-patterns-2
 * Strategy
 * Adapter
 * Observer
+* Decorator
+* Factory
 
 ## Maven commands
 - mvn clean compile
